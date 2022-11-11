@@ -12,11 +12,11 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
   - 
   - 
   - 
-  - 
-  - 
+  - FogOfWar
   - 
   - 
   - 
@@ -31,14 +31,17 @@ TagManager:
   - 
   - 
   - 
+  - Doors
   - 
   - 
   - 
   - 
   - 
-  - 
-  - 
+  - BackGround
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 2322328673
+    locked: 0
   - name: Layer -1
     uniqueID: 2085870939
     locked: 0
@@ -53,4 +56,10 @@ TagManager:
     locked: 0
   - name: Layer 3
     uniqueID: 241680681
+    locked: 0
+  - name: Doors
+    uniqueID: 3891952747
+    locked: 0
+  - name: FogOfWar
+    uniqueID: 460177061
     locked: 0

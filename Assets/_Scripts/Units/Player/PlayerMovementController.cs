@@ -1,44 +1,29 @@
 using UnityEngine;
 using Assets.Scripts.Utilities;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : BaseMovementController
 {
     private float Horizontal, Vertical;
-#pragma warning disable CS0108 
-    private Rigidbody2D rigidbody;
-#pragma warning restore CS0108
-    private float Speed = 5f;
 
     [SerializeField] private Sprite[] sprites;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform _backpack;
 
-    private void Awake()
+    override public void Move()
     {
-        rigidbody = GetComponent<Rigidbody2D>();
-    }
+        if (Time.time < LockedTill) return;
 
-    private void Update()
-    {
-        Move();
-        Rotate();
-        //gameObject.transform.rotation = UtilsClass.LookAt(UtilsClass.GetMouseWorldPosition(), transform.position);
-    }
-
-    private void Move()
-    {
         Horizontal = Input.GetAxisRaw("Horizontal");
         Vertical = Input.GetAxisRaw("Vertical");
 
-        rigidbody.velocity = new Vector3(Horizontal * Speed, Vertical * Speed, 0);
+        base.Rigidbody.velocity = new Vector3(Horizontal * Unit.Stats.Speed, Vertical * Unit.Stats.Speed, 0);
     }
 
-    private void Rotate()
+    override public void Rotate()
     {
 
         Quaternion rotation = UtilsClass.LookAt(UtilsClass.GetMouseWorldPosition(), _backpack.position);
         float eulerAngle = rotation.eulerAngles.z;
-        Debug.Log(eulerAngle);
         _backpack.transform.rotation = rotation;
 
         //North

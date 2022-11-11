@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6860209648994689705}
-  m_Layer: 20
+  m_Layer: 6
   m_Name: Backpack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,9 +47,9 @@ GameObject:
   - component: {fileID: 817206530}
   - component: {fileID: 1393803398302521975}
   - component: {fileID: 817206533}
-  m_Layer: 20
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63,7 +63,7 @@ Transform:
   m_GameObject: {fileID: 6162429921385908663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6860209648994689705}
@@ -83,7 +83,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -155,13 +155,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b60ab6c611d4f4197a1bc0c352b88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  Rigidbody: {fileID: 0}
+  Unit: {fileID: 0}
   sprites:
   - {fileID: -128064254, guid: 88f262547f82aae459bee072a2f3dec8, type: 3}
   - {fileID: 1044238701, guid: 88f262547f82aae459bee072a2f3dec8, type: 3}
   - {fileID: 1786070497, guid: 88f262547f82aae459bee072a2f3dec8, type: 3}
   - {fileID: 1882236057, guid: 88f262547f82aae459bee072a2f3dec8, type: 3}
   spriteRenderer: {fileID: 817206532}
-  _backpack: {fileID: 0}
+  _backpack: {fileID: 6860209648994689705}
 --- !u!114 &817206530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,9 +177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb9fb441df88d8f47ba6f1349421e45c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 11400000, guid: 2be34d9e710bac5489c69fb9cd943853, type: 2}
-  _attackPoint: {fileID: 8130600034794729737}
-  _backpack: {fileID: 0}
+  Unit: {fileID: 0}
+  AttackPoint: {fileID: 8130600034794729737}
+  weapon: {fileID: 11400000, guid: 2eba833f0dfd47645aa28cbfaf69ae20, type: 2}
+  _backpack: {fileID: 6860209648994689705}
 --- !u!114 &1393803398302521975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a783dd0b54eb324a83b335b72d00319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Scriptable: {fileID: 11400000, guid: 6b4569e49f4479a4398b4031e14cbfdf, type: 2}
   playerMovementController: {fileID: 817206529}
   playerCombatController: {fileID: 817206530}
 --- !u!58 &817206533
@@ -216,7 +221,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8130600034794729737}
-  m_Layer: 20
+  m_Layer: 6
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231,7 +236,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8880062456089180636}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

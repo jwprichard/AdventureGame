@@ -5,8 +5,8 @@ using System.Linq;
 
 public class ResourceSystem : Singleton<ResourceSystem>
 {
-    public List<ScriptableBase> Units = new();
-    private Dictionary<UnitType, ScriptableBase> _units = new();
+    public List<UnitScriptableBase> Units = new();
+    private Dictionary<UnitType, UnitScriptableBase> _units = new();
 
     protected override void Awake()
     {
@@ -16,9 +16,9 @@ public class ResourceSystem : Singleton<ResourceSystem>
 
     private void AssembleResources()
     {
-        Units = Resources.LoadAll<ScriptableBase>("Units").ToList();
+        Units = Resources.LoadAll<UnitScriptableBase>("Units").ToList();
         _units = Units.ToDictionary(r => r.unitType, r => r);
     }
 
-    public ScriptableBase GetUnit(UnitType t) => _units[t];
+    public UnitScriptableBase GetUnit(UnitType t) => _units[t];
 }

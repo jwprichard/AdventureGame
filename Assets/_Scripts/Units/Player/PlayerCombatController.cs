@@ -1,93 +1,78 @@
 using UnityEngine;
-using Assets.Scripts.Utilities;
+using Assets.Units;
 
-public class PlayerCombatController : MonoBehaviour
+namespace Assets.Combat
 {
-    public Weapon weapon;
-    private GameObject weaponGo;
-
-    private Animator _anim;
-    [SerializeField] private Transform _attackPoint;
-    [SerializeField] private Transform _backpack;
-
-    private static readonly int animIdle = Animator.StringToHash("Idle");
-    private static readonly int animAttack = Animator.StringToHash("Attack");
-
-    float _LockedTill = 0;
-    int _CurrentState = 0;
-
-    public void Awake()
+    public class PlayerCombatController : BaseCombatController
     {
-        CreateWeapon();
-        _anim = weaponGo.AddComponent<Animator>();
-        _anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation\\" + weapon.animContName);
-    }
+        private GameObject weaponGo;
 
-    private void Update()
-    {
-        var state = GetState();
+        private Animator _anim;
+        [SerializeField] private Transform _backpack;
 
-        if (state == _CurrentState) return;
-        _anim.CrossFade(state, 0, 0);
-        _CurrentState = state;
+        private static readonly int animIdle = Animator.StringToHash("Idle");
+        private static readonly int animAttack = Animator.StringToHash("Attack");
 
+        float _LockedTill = 0;
+        int _CurrentState = 0;
 
-    }
-
-    private int GetState()
-    {
-        if (Time.time < _LockedTill) return _CurrentState;
-
-        if (Input.GetMouseButtonDown(0))
+        public override void Awake()
         {
-            Attack();
-            return LockState(animAttack, 0.5f);
+            CreateWeapon();
+            Unit = GetComponent<UnitBase>();
         }
 
-        int LockState(int s, float t)
+        public override void Update()
         {
-            _LockedTill = Time.time + t;
-            return s;
-        }
-
-        return animIdle;
-    }
-
-    private void Attack()
-    {
-        Collider2D[] collisions = Physics2D.OverlapCircleAll(_attackPoint.position, 1f);
-        if (collisions.Length > 0)
-        {
-            if (collisions[0].CompareTag("Enemy"))
+            Animate();
+            if (_CurrentState == animAttack)
             {
-                collisions[0].GetComponent<SpriteRenderer>().color = Color.red;
-                collisions[0].attachedRigidbody.AddForce((collisions[0].transform.position - transform.position) * 20, ForceMode2D.Impulse);
-                Debug.DrawLine(_attackPoint.position - new Vector3(-1, 0), _attackPoint.position + new Vector3(1, 0));
-                Debug.DrawLine(_attackPoint.position - new Vector3(0, -1), _attackPoint.position + new Vector3(0, 1));
+                Attack();
             }
         }
-    }
 
-    private void CreateWeapon()
-    {
-        weaponGo = Instantiate(new GameObject());
-        AddSpriteRenderer(weaponGo);
-        weaponGo.transform.position = new(transform.position.x, transform.position.y + 1f);
-        weaponGo.transform.parent = _backpack;
-    }
+        private void Animate()
+        {
+            var state = GetState();
 
-    private void AddSpriteRenderer(GameObject go)
-    {
-        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-        SpriteRenderer gosr = gameObject.GetComponent<SpriteRenderer>();
-        sr.sprite = weapon.sprites[0];
-        sr.sortingLayerName = gosr.sortingLayerName;
-        sr.sortingOrder = gosr.sortingOrder+1;
-        
-    }
+            if (state == _CurrentState) return;
+            if (_anim != null)
+            {
+                _anim.CrossFade(state, 0, 0);
+            }
+            _CurrentState = state;
+        }
 
-    private void SetupAnimator()
-    {
+        private int GetState()
+        {
+            //if (Time.time < _LockedTill) return _CurrentState;
 
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Attack();
+                return LockState(animAttack, 0.5f);
+            }
+
+            if (Time.time < _LockedTill) return _CurrentState;
+
+            int LockState(int s, float t)
+            {
+                _LockedTill = Time.time + t;
+                return s;
+            }
+
+            return animIdle;
+        }
+
+        private void CreateWeapon()
+        {
+            if (Weapon.prefab != null)
+            {
+                weaponGo = Instantiate(Weapon.prefab);
+                weaponGo.transform.position = new(transform.position.x, transform.position.y + 0.5f);
+                weaponGo.transform.parent = _backpack;
+                _anim = weaponGo.GetComponent<Animator>();
+            }
+        }
     }
 }
